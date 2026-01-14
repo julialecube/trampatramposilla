@@ -47,8 +47,8 @@ let dotsTimer = null;
 
 // ---------- TEXT INFINIT ----------
 let lines = 0;
-const REVEAL_AFTER_LINES = 55; // quantitat de "mes abaix plis" abans que surti "entrar"
-const BATCH = 14;
+const REVEAL_AFTER_LINES = 22; // quantitat de "mes abaix plis" abans que surti "entrar"
+const BATCH = 8;
 
 function addLine(text) {
   const p = document.createElement("p");
