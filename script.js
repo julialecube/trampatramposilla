@@ -72,8 +72,12 @@ if (feed) addBatch();
 
 // Scroll: si arribes al final, afegeix més text
 window.addEventListener("scroll", () => {
+  // Si ja s’ha revelat "entrar", NO afegeixis més text.
+  if (enterZone && !enterZone.hidden) return;
+
   const y = window.scrollY || document.documentElement.scrollTop;
   const nearBottom = window.innerHeight + y >= document.body.offsetHeight - 120;
+
   if (nearBottom) addBatch();
 });
 
