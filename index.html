@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>lolesbait</title>
+  <link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+  <header class="wrap header">
+    <div class="brand">lolesbait</div>
+    <div class="hint">vFinal</div>
+  </header>
+
+  <main class="wrap">
+    <!-- INICI -->
+    <section class="card hero" id="hero">
+      <h1 class="h1">tranqui q no es bait</h1>
+      <p class="sub">es bait lowk</p>
+    </section>
+
+    <!-- TEXT INFINIT (SENSE BLOC ESPECIAL) -->
+    <div id="infiniteFeed" class="feed"></div>
+
+    <!-- ENTRAR (APAREIX DESPRÉS DE MOLT SCROLL) -->
+    <section class="card" id="enterZone" hidden>
+      <p class="sub">ok. ja prou. vols entrar?</p>
+      <div class="row">
+        <button class="btn" id="startGateBtn">entrar</button>
+      </div>
+      <p class="small" id="enterNote"></p>
+    </section>
+
+    <!-- PASSADÍS DE BOTONS TRAMPA -->
+    <section class="card" id="gate" hidden>
+      <h2 class="h2">ok, per veure les fotos:</h2>
+      <p class="sub" id="gateMsg">clica aquí</p>
+      <div class="row">
+        <button class="btn" id="gateBtn">clica aquí</button>
+      </div>
+      <p class="small">no és aquí. potser sí. no. sí. bait.</p>
+    </section>
+
+    <!-- ZONA FOTOS -->
+    <section class="card" id="baitZone" hidden>
+      <div class="baitWall" id="baitWall"></div>
+
+      <p class="sub" style="margin-top:12px;">fotos (pixelades). clica per veure.</p>
+      <div class="grid" id="pixelGrid"></div>
+
+      <!-- VISOR -->
+      <div class="viewer" id="viewer" hidden>
+        <div class="viewerTop">
+          <div class="viewerTitle">imatge oberta: <span id="currentName">—</span></div>
+        </div>
+
+        <img id="bigImg" class="big" alt="Imatge oberta" />
+
+        <div class="row">
+          <button class="btn" id="nextBtn">una altra</button>
+          <button class="btn" id="moveBtn">clica aquí (fàcil)</button>
+          <button class="btn" id="loadBtn">carregar contingut</button>
+          <button class="btn" id="dlBtn">descarregar</button>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <!-- Loading infinit -->
+        <div class="loader" id="loader" hidden>
+          <div class="spinner"></div>
+          <div class="loaderText" id="loaderText">carregant…</div>
+          <button class="btn tiny" id="cancelFake">cancel·lar</button>
+        </div>
+
+        <!-- Progrés 99% -->
+        <div class="progressWrap" id="progressWrap" hidden>
+          <div class="progressTop">
+            <div class="small" id="progressLabel">descarregant…</div>
+            <div class="small" id="progressPct">0%</div>
+          </div>
+          <div class="track"><div class="bar" id="progressBar" style="width:0%"></div></div>
+          <div class="small" id="progressNote">—</div>
+        </div>
+      </div>
+
+      <!-- FINAL MOLT AVALL -->
+      <div id="finalSpacer"></div>
+      <div class="row" id="finalRow" hidden>
+        <a class="btn" href="casi.html">final</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="corner67">67</div>
+
+  <script src="script.js?v=1"></script>
+</body>
+</html>
