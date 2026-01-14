@@ -201,4 +201,70 @@ if (moveBtn) {
 
     moveBtn.style.position = "relative";
     moveBtn.style.left = x + "px";
-    moveBtn.style.top
+    moveBtn.style.top = y + "px";
+
+    const msgs = ["ups", "gairebé", "no", "sí", "bait"];
+    setStatus(msgs[Math.floor(Math.random() * msgs.length)]);
+  });
+}
+
+// Loading infinit
+if (loadBtn) {
+  loadBtn.addEventListener("click", () => {
+    if (!loader || !loaderText) return;
+
+    loader.hidden = false;
+    setStatus("carregant…");
+
+    let dots = 0;
+    if (dotsTimer) clearInterval(dotsTimer);
+    dotsTimer = setInterval(() => {
+      dots = (dots + 1) % 4;
+      loaderText.textContent = "carregant" + ".".repeat(dots);
+    }, 450);
+  });
+}
+
+if (cancelFake) {
+  cancelFake.addEventListener("click", () => {
+    if (loader) loader.hidden = true;
+    if (dotsTimer) clearInterval(dotsTimer);
+    dotsTimer = null;
+    setStatus("cancel·lat (però no)");
+  });
+}
+
+// Descàrrega fake 99%
+if (dlBtn) {
+  dlBtn.addEventListener("click", () => {
+    if (!currentName) {
+      setStatus("obre una imatge primer");
+      return;
+    }
+    if (!progressWrap || !progressBar || !progressPct || !progressLabel || !progressNote) return;
+
+    progressWrap.hidden = false;
+    progressLabel.textContent = `descarregant ${currentName}…`;
+    progressNote.textContent = "preparant…";
+    setStatus("");
+
+    let p = 0;
+    progressBar.style.width = "0%";
+    progressPct.textContent = "0%";
+
+    const interval = setInterval(() => {
+      if (p < 90) p += 10;
+      else if (p < 99) p += 1;
+      else p = 99;
+
+      progressBar.style.width = p + "%";
+      progressPct.textContent = p + "%";
+
+      if (p === 99) {
+        progressNote.textContent = "quasi. però no.";
+        setStatus("99% per sempre.");
+        clearInterval(interval);
+      }
+    }, 200);
+  });
+}
