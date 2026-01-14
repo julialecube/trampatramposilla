@@ -57,7 +57,7 @@ let lines = 0;
 // Ajustos:
 // - REVEAL_AFTER_LINES = quantitat total de línies abans que surti "entrar"
 // - BATCH = quantes línies afegeix cada vegada que arribes al final
-const REVEAL_AFTER_LINES = 110; // molt llarg però assolible (prova 90–140)
+const REVEAL_AFTER_LINES = 440; // molt llarg però assolible (prova 90–140)
 const BATCH = 10;
 
 // Quan es revela "entrar", parem de créixer perquè no s’allunyi
