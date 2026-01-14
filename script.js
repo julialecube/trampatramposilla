@@ -40,17 +40,31 @@ const progressNote = document.getElementById("progressNote");
 
 const finalRow = document.getElementById("finalRow");
 
-// Estat
+// Estat visor
 let currentName = null;
 let lastIndex = -1;
 let dotsTimer = null;
 
-// ---------- TEXT INFINIT ----------
+function setStatus(msg) {
+  if (statusEl) statusEl.textContent = msg;
+}
+
+/* -------------------------
+   1) TEXT INFINIT (MOLT LLARG PERÒ ARRIBA)
+-------------------------- */
 let lines = 0;
-const REVEAL_AFTER_LINES = 70;; // quantitat de "mes abaix plis" abans que surti "entrar"
-const BATCH = 12;
+
+// Ajustos:
+// - REVEAL_AFTER_LINES = quantitat total de línies abans que surti "entrar"
+// - BATCH = quantes línies afegeix cada vegada que arribes al final
+const REVEAL_AFTER_LINES = 110; // molt llarg però assolible (prova 90–140)
+const BATCH = 10;
+
+// Quan es revela "entrar", parem de créixer perquè no s’allunyi
+let growthLocked = false;
 
 function addLine(text) {
+  if (!feed) return;
   const p = document.createElement("p");
   p.className = "feedLine";
   p.textContent = text;
@@ -59,37 +73,38 @@ function addLine(text) {
 }
 
 function addBatch() {
+  if (growthLocked) return;
+
   for (let i = 0; i < BATCH; i++) addLine("mes abaix plis");
+
+  // Revela "entrar" quan toca i bloqueja creixement
   if (lines >= REVEAL_AFTER_LINES && enterZone && enterZone.hidden) {
     enterZone.hidden = false;
-    // No fem scroll automàtic: apareix “entrar” quan hi arribes fent scroll
+    growthLocked = true; // CLau: ja pots arribar-hi
   }
 }
 
-// Inicial
-if (feed) addBatch();
-if (feed) addBatch();
+// Inicial: posa unes quantes línies perquè no estigui buit
+addBatch();
+addBatch();
+addBatch();
 
-// Scroll: si arribes al final, afegeix més text
+// Scroll: afegeix més línies només mentre no s’hagi revelat "entrar"
 window.addEventListener("scroll", () => {
-  // Si ja s’ha revelat "entrar", NO afegeixis més text.
-  if (enterZone && !enterZone.hidden) return;
+  if (growthLocked) return;
 
   const y = window.scrollY || document.documentElement.scrollTop;
-  const nearBottom = window.innerHeight + y >= document.body.offsetHeight - 120;
-
+  const nearBottom = window.innerHeight + y >= document.body.offsetHeight - 140;
   if (nearBottom) addBatch();
 });
 
-// ---------- ENTRAR / PASSADÍS ----------
-function setStatus(msg) {
-  if (statusEl) statusEl.textContent = msg;
-}
-
+/* -------------------------
+   2) ENTRAR / PASSADÍS
+-------------------------- */
 if (startGateBtn) {
   startGateBtn.addEventListener("click", () => {
     if (gate) gate.hidden = false;
-    if (enterNote) enterNote.textContent = "ok. ara baixa una mica.";
+    if (enterNote) enterNote.textContent = "ok. ara ve el passadís.";
     // No scroll automàtic
   });
 }
@@ -116,18 +131,22 @@ if (gateBtn) {
     if (step === gateSteps.length) {
       if (baitZone) baitZone.hidden = false;
       if (finalRow) finalRow.hidden = false;
+
       buildBaitWall();
       buildPixelGallery();
-      // No obrim cap foto sola: primer veus pixelades
+      // No obrim cap foto sola
     }
   });
 }
 
-// ---------- BAIT WALL ----------
+/* -------------------------
+   3) BAIT WALL
+-------------------------- */
 function buildBaitWall() {
   if (!baitWall) return;
   baitWall.innerHTML = "";
   const total = 16;
+
   for (let i = 0; i < total; i++) {
     const d = document.createElement("div");
     d.className = "baitBlock" + (i % 5 === 0 ? " big" : "");
@@ -136,7 +155,9 @@ function buildBaitWall() {
   }
 }
 
-// ---------- GALERIA PIXELADA ----------
+/* -------------------------
+   4) GALERIA PIXELADA
+-------------------------- */
 function buildPixelGallery() {
   if (!pixelGrid) return;
   pixelGrid.innerHTML = "";
@@ -154,7 +175,9 @@ function buildPixelGallery() {
   });
 }
 
-// ---------- VISOR (foto gran) ----------
+/* -------------------------
+   5) VISOR (foto gran + baixa automàtic)
+-------------------------- */
 function openImage(it) {
   if (!viewer || !bigImg) return;
 
@@ -177,7 +200,7 @@ function openImage(it) {
 
   setTimeout(() => setStatus("ok ara sí (parcial)"), 600);
 
-  // IMPORTANT: en clicar miniatura, baixa a la foto gran
+  // Baixa fins al visor (important)
   viewer.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -193,7 +216,9 @@ function showRandomImage() {
 
 if (nextBtn) nextBtn.addEventListener("click", () => showRandomImage());
 
-// Botó que es mou
+/* -------------------------
+   6) BOTÓ QUE ES MOU
+-------------------------- */
 if (moveBtn) {
   moveBtn.addEventListener("click", () => {
     const parent = moveBtn.parentElement;
@@ -212,7 +237,9 @@ if (moveBtn) {
   });
 }
 
-// Loading infinit
+/* -------------------------
+   7) LOADING INFINIT
+-------------------------- */
 if (loadBtn) {
   loadBtn.addEventListener("click", () => {
     if (!loader || !loaderText) return;
@@ -238,7 +265,9 @@ if (cancelFake) {
   });
 }
 
-// Descàrrega fake 99%
+/* -------------------------
+   8) DESCÀRREGA FAKE 99%
+-------------------------- */
 if (dlBtn) {
   dlBtn.addEventListener("click", () => {
     if (!currentName) {
